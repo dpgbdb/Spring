@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bookstore">
+	<insert id="insertbook">
+		INSERT INTO `book` VALUES (#{bookId}, #{bookName}, #{publisher}, #{price});
+	</insert>
+	<select id="selectbooks" resultType="bookstore.vo.BookVO">
+		select * from `book`;
+	</select>
+	<select id="selectbook" resultType="bookstore.vo.BookVO">
+		select * from `book` where `bookId`=#{bookId};
+	</select>
+	<update id="updatebook">
+		update `book` set 
+			`bookName`=#{bookName},
+			`publisher`=#{publisher},
+			`price`=#{price}
+		where
+			`bookId`=#{bookId};		
+	</update>
+	<delete id="deletebook">
+		delete from `book` where `bookId`=#{bookId};
+	</delete>
+	
+	<insert id="insertcustomer">
+		INSERT INTO `customer` VALUES (#{custId}, #{name}, #{address}, #{phone});
+	</insert>
+	<select id="selectcustomers" resultType="bookstore.vo.CustomerVO">
+		select * from `customer`;
+	</select>
+	<select id="selectcustomer" resultType="bookstore.vo.CustomerVO">
+		select * from `customer` where `custId`=#{custId};
+	</select>
+	<update id="updatecustomer">
+		update `customer` set 
+			`name`=#{name},
+			`address`=#{address},
+			`phone`=#{phone}
+		where
+			`custId`=#{custId};		
+	</update>
+	<delete id="deletecustomer">
+		delete from `customer` where `custId`=#{custId};
+	</delete>
+	
+	
+</mapper>
