@@ -1,7 +1,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{_header.html}"/>
         <main id="user" class="login">
-            <form action="@{/user/login}" method="post">
+            <form th:action="@{/user/login}" method="post">
                 <table border="0">
                     <tr>
                         <td><img th:src="@{/img/login_ico_id.png}" alt="로그인"/></td>

@@ -11,41 +11,41 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 public class SecurityConfigration {
-	
+
 	@Autowired
 	private SecurityUserService service;
-	
+
 	@Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
 		// 인가(접근권한) 설정
 		http.authorizeHttpRequests().antMatchers("/").permitAll();
 
 		// 사이트 위변조 요청 방지
 		http.csrf().disable();
-		
-		/*// 로그인 설정
+
+		// 로그인 설정
 		http.formLogin()
-		.loginPage("/user/login")
-		.defaultSuccessUrl("/list")
-		.failureUrl("/user/login?success=100")
-		.usernameParameter("uid")
-		.passwordParameter("pass");
-		
+				.loginPage("/user/login")
+				.defaultSuccessUrl("/index")
+				.failureUrl("/user/login?success=100")
+				.usernameParameter("uid")
+				.passwordParameter("pass");
+
 		// 로그아웃 설정
 		http.logout()
-		.invalidateHttpSession(true)
-		.logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
-		.logoutSuccessUrl("/user/login?success=200");
-		*/
+				.invalidateHttpSession(true)
+				.logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
+				.logoutSuccessUrl("/user/login?success=200");
+
 		// 사용자 인증 처리 컴포넌트 서비스 등록
 		http.userDetailsService(service);
-		
+
 		return http.build();
 	}
-	
+
 	@Bean
-    public PasswordEncoder encoder() {
+	public PasswordEncoder encoder() {
 		return new BCryptPasswordEncoder();
-    }
+	}
 }
