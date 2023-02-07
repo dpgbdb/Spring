@@ -2,12 +2,10 @@ package kr.co.sboard.controller;
 
 import kr.co.sboard.entity.UserEntity;
 import kr.co.sboard.service.ArticleService;
-//import kr.co.sboard.service.FileService;
 import kr.co.sboard.vo.ArticleVO;
 import kr.co.sboard.vo.SearchCondition;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +28,6 @@ import java.util.Map;
 
 @Slf4j
 @Controller
-@PropertySource(value = "classpath:navi.properties", encoding = "UTF-8")
 @AllArgsConstructor
 @RequestMapping("/gnb")
 public class NavigationController {
