@@ -2,6 +2,7 @@ package kr.co.sboard.dao;
 
 import java.util.List;
 
+import kr.co.sboard.vo.SearchCondition;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -20,4 +21,7 @@ public interface ArticleDAO {
 	public int updateArticle(ArticleVO vo);
 	public int updateDownload(int fno);
 	public int deleteArticle(int no);
+	List<ArticleVO> selectAll(SearchCondition sc);
+	ArticleVO select(int no);
+	int countAll(SearchCondition sc);
 }

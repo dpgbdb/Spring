@@ -9,6 +9,9 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 
+import kr.co.sboard.utils.PageHandler;
+import kr.co.sboard.vo.SearchCondition;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
@@ -19,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.sboard.dao.ArticleDAO;
@@ -29,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
+@AllArgsConstructor
 public class ArticleService {
 
 	@Autowired
@@ -36,8 +41,41 @@ public class ArticleService {
 	
 	@Autowired
 	private ArticleRepo repo;
-	
-	
+
+	public void getArticles(Model m, SearchCondition sc){
+		log.info("ArticleService getArticles...");
+
+		int totalCnt = dao.countAll(sc);
+
+		/** 검색 페이지 > 전체 페이수일 경우 실행 **/
+		// 전체 페이지수
+		int totalPage = (int)Math.ceil(totalCnt/(double)sc.getPageSize());
+
+		// 전체 페이지수가 현재 페이지수 보다 크면 전체 페이지수로 값 저장
+		if(sc.getPage() > totalPage) sc.setPage(totalPage);
+		/**                                 **/
+
+		PageHandler pageHandler = new PageHandler(totalCnt, sc);  // 페이징 처리
+		List<ArticleVO> articles =  dao.selectAll(sc); 			  // 게시물 조회
+
+		log.info(articles.toString());
+
+		m.addAttribute("ph", pageHandler);
+		m.addAttribute("articles", articles);
+	};
+
+	public ArticleVO getArticle(int no) {
+		log.info("ArticleService getArticle...");
+		return dao.select(no);
+	};
+
+
+
+	public int countAll(SearchCondition sc) {
+		return dao.countAll(sc);
+	}
+
+
 	@Transactional
 	public int insertArticle(ArticleVO vo) {
 		// 글 등록
@@ -59,12 +97,12 @@ public class ArticleService {
 		return vo;
 	}
 	
-	public ArticleVO selectArticle(int no) {
-		return dao.selectArticle(no);
-	}
-	public List<ArticleVO> selectArticles(int start) {
-		return dao.selectArticles(start);
-	}
+//	public ArticleVO selectArticle(int no) {
+//		return dao.selectArticle(no);
+//	}
+//	public List<ArticleVO> selectArticles(int start) {
+//		return dao.selectArticles(start);
+//	}
 	public int updateArticle(ArticleVO vo) {
 		return dao.updateArticle(vo);
 	}
@@ -125,7 +163,7 @@ public class ArticleService {
 		
 		return new ResponseEntity<>(resource, headers, HttpStatus.OK);		
 	}
-	
+	/*
 	// 페이지 시작값
 	public int getLimitStart(int currentPage) {
 		return (currentPage - 1) * 10;
@@ -180,5 +218,6 @@ public class ArticleService {
 		
 		return groups;
 	}
+	 */
 	
 }

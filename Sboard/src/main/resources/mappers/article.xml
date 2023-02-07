@@ -3,6 +3,19 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.sboard.dao.ArticleDAO">
+	<select id="selectAll" parameterType="kr.co.farmstory.vo.SearchCondition" resultType="kr.co.farmstory.vo.ArticleVO">
+		SELECT a.*, u.nick FROM `board_article` as a
+		JOIN `board_user` as u
+		ON a.`uid` = u.`uid`
+		ORDER BY `no` DESC
+		LIMIT #{offset}, 10;
+	</select>
+	<select id="countAll" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `board_article` a
+		JOIN `board_user`u ON a.`uid` = u.`uid`
+<!--	sboard cate x 	WHERE cate=#{cate}-->
+		<include refid="searchCondition"/>
+	</select>
 
 	<insert id="insertArticle" useGeneratedKeys="true" keyProperty="no">
 		insert into `board_article` set
